@@ -6,6 +6,7 @@
 
 # Resolve DID for handle
 DID_URL="https://bsky.social/xrpc/com.atproto.identity.resolveHandle"
+declare -a DID
 export DID=$(curl -s -G \
   --data-urlencode "handle=$BSKY_USERNAME" \
   "$DID_URL" | jq -r .did)
@@ -13,6 +14,7 @@ export DID=$(curl -s -G \
 # Get API key with the app password
 API_KEY_URL='https://bsky.social/xrpc/com.atproto.server.createSession'
 POST_DATA='{ "identifier": "'"${DID}"'", "password": "'"${BSKY_PASSWORD}"'" }'
+declare -a API_KEY
 export API_KEY=$(curl -s -X POST \
   -H 'Content-Type: application/json' \
   -d "$POST_DATA" \
