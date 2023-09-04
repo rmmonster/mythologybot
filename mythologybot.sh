@@ -15,6 +15,9 @@ export TWEET=$(awk NR==$random_line_number motifs.txt | sed -r 's/(^\S+? )|(: |;
 echo -e "Should tweet\n\t'$TWEET'"
 
 twurl set default MythologyBot
-twurl '/2/tweets' --data '{"text": "'"${TWEET//$'\n'/\\n}"'"}' --header 'Content-Type: application/json' --consumer-key ${MYTHBOT_CONSUMERKEY} --consumer-secret ${MYTHBOT_CONSUMERSECRET} --access-token ${MYTHBOT_ACCESSTOKEN} --token-secret ${MYTHBOT_TOKENSECRET}
-curl -H "Authorization: Bearer $MYTHOLOGYBOT_MASTODON" -d "status=$TWEET" https://botsin.space/api/v1/statuses
-/home/boodoo/apps/mythology/bsky.sh
+tweet_text="${TWEET//$'\n'/\\n}"
+twurl '/2/tweets' --data "{\"text\": \"${tweet_text}\"}" --header 'Content-Type: application/json' --consumer-key "${MYTHBOT_CONSUMERKEY}" --consumer-secret "${MYTHBOT_CONSUMERSECRET}" --access-token "${MYTHBOT_ACCESSTOKEN}" --token-secret "${MYTHBOT_TOKENSECRET}"
+curl -H "Authorization: Bearer $MYTHOLOGYBOT_MASTODON" -d "status=$TWEET" "https://botsin.space/api/v1/statuses"
+
+# push the exported variable TWEET to bsky
+"$HOME/apps/mythology/bsky.sh"
