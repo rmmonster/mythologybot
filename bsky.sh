@@ -4,6 +4,15 @@
 # https://gist.github.com/pojntfx/72403066a96593c1ba8fd5df2b531f2d
 # this takes the TWEET variable from the mythologybot.sh script and pushes it out to bsky
 
+# fail the execution of the script on command returning error
+set -e
+
+# make sure the variable TWEET is set
+if [[ -z "$TWEET" ]]; then
+    echo '$TWEET is empty or unset.'
+    exit 1
+fi
+
 # Resolve DID for handle
 DID_URL="https://bsky.social/xrpc/com.atproto.identity.resolveHandle"
 declare -a DID
